@@ -1,0 +1,61 @@
+# docker/docker-compose.yml
+version: '3'
+
+services:
+  database:
+    container_name: symfony_db
+    build:
+      context: ./docker/database
+    environment:
+      - MYSQL_DATABASE=${DATABASE_NAME}
+      - MYSQL_USER=${DATABASE_USER}
+      - MYSQL_PASSWORD=${DATABASE_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    env_file: .env
+    volumes:
+      - ./docker/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./docker/database/data:/var/lib/mysql
+    networks:
+      - db
+
+  php:
+    container_name: symfony_php
+    build:
+      context: ./docker/php-fpm
+    # restart: on-failure
+    env_file: .env
+    depends_on:
+      - database
+    environment:
+      - APP_ENV=${APP_ENV}
+      - APP_SECRET=${APP_SECRET}
+      - DATABASE_URL=mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@database:3306/${DATABASE_NAME}?serverVersion=5.7
+    volumes:
+      - ./application:/var/www/application
+    ports:
+      - "9000:9001"
+    networks:
+      - db
+      - php
+
+  nginx:
+    container_name: symfony_nginx
+    build:
+      context: ./docker/nginx
+    # restart: on-failure
+    volumes:
+        - ./docker/logs/nginx:/var/log/nginx
+        - ./application:/var/www/application
+    depends_on:
+      - php
+    networks:
+      - php
+    ports:
+      - "80:80"
+
+networks:
+    db:
+    php:
+    elk_stack:
