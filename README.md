@@ -8,6 +8,11 @@
 ## Down
 > docker-compose down
 
+## Create environment file
+> cp -p .evn.sample .env
+
+`Update the values of your sandbox`
+
 ## Test the app running
 http://symfony.localhost
 
@@ -19,5 +24,5 @@ http://symfony.localhost
 ### To build traditional web application
 > composer create-project symfony/website-skeleton .
 
-### To buila a microservice, console application or API
+### To build a microservice, console application or API
 > composer create-project symfony/skeleton .
