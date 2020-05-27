@@ -1,7 +1,7 @@
 # Composer
 
 ## Create environment file
-> cp -p .evn.sample .env
+> cp -p .env.sample .env
 
 ## Build
 > docker-compose up -d --build
