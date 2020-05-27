@@ -1,4 +1,8 @@
 # Composer
+
+## Create environment file
+> cp -p .evn.sample .env
+
 ## Build
 > docker-compose up -d --build
 
@@ -8,13 +12,8 @@
 ## Down
 > docker-compose down
 
-## Create environment file
-> cp -p .evn.sample .env
-
-`Update the values of your sandbox`
-
 ## Test the app running
-http://symfony.localhost
+http://localhost:8080
 
 # Symfony create project
 
